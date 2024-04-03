@@ -1,0 +1,9 @@
+.md {
+  p {
+    margin-bottom: theme('spacing.4');
+  }
+  a:link {
+    color: theme('colors.violet.500');
+    text-decoration: underline;
+  }
+}
