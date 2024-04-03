@@ -4,7 +4,7 @@ import { Search } from '../search'
 
 export const Routes = (props: {}) => {
   return (
-    <HashRouter root={Layout} base={import.meta.env.BASE_URL}>
+    <HashRouter root={Layout}>
       <Route path="/search" component={Search} />
     </HashRouter>
   )
