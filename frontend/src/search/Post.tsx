@@ -42,6 +42,7 @@ export const Post = ({ post }: Props) => {
   })
 
   const content = createMemo(() => {
+    if (!post.selftext_html) return ''
     const doc = new DOMParser().parseFromString(post.selftext_html, 'text/html')
     return doc.documentElement.textContent || ''
   })
