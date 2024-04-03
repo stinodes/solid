@@ -1,4 +1,4 @@
-import { createResource, createSignal } from 'solid-js'
+import { createEffect, createResource, createSignal } from 'solid-js'
 import { TextInput } from '../common/components/TextInput'
 import { Button } from '../common/components/Button'
 import { A, useNavigate, useSearchParams } from '@solidjs/router'
@@ -26,6 +26,10 @@ export const Search = () => {
     e.preventDefault()
     navigate(`/search?${toSearchParams(searchValue())}`)
   }
+
+  createEffect(() => {
+    if (params.q) setSearchValue(params.q)
+  })
 
   return (
     <form class={cx('w-full', 'relative', 'flex')} onSubmit={onSearch}>
