@@ -1,4 +1,4 @@
-import { HashRouter, Route, Router } from '@solidjs/router'
+import { HashRouter, Route } from '@solidjs/router'
 import { Layout } from './Layout'
 import { Search } from '../search'
 
