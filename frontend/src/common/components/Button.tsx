@@ -13,16 +13,12 @@ type Props = {
   bg?: keyof typeof backgrounds
   size?: 'sm' | 'md' | 'lg'
 }
-export const Button = ({
-  bg = 'sky',
-  size = 'md',
-  ...props
-}: JSX.IntrinsicElements['button'] & Props) => {
+export const Button = (props: JSX.IntrinsicElements['button'] & Props) => {
   return (
     <button
       {...props}
       class={cx(
-        backgrounds[bg],
+        backgrounds[props.bg || 'sky'],
         [
           'flex',
           'text-gray-200',
@@ -36,9 +32,9 @@ export const Button = ({
           props.class,
         ],
         {
-          'py-2': size === 'sm',
-          'py-4': size === 'md',
-          'py-8': size === 'lg',
+          'py-2': props.size === 'sm',
+          'py-4': !props.size || props.size === 'md',
+          'py-8': props.size === 'lg',
         },
       )}
     />

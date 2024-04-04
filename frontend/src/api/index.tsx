@@ -54,6 +54,8 @@ export type Post = {
   created_utc: number
 }
 
+let currentRequest = 0
+
 export const fetchPosts = (config: PostSearchConfig) => {
   const params = new URLSearchParams()
   params.set('size', '' + 10)
@@ -80,6 +82,7 @@ export const fetchPosts = (config: PostSearchConfig) => {
 
 export const createPostsResource = (search: Partial<PostSearchConfig>) => {
   const [posts, setPosts] = createSignal<Post[]>([])
+  const [hasError, setError] = createSignal(false)
   const [isLoading, setLoading] = createSignal(false)
 
   const nextPage = createMemo(() => {
@@ -93,16 +96,30 @@ export const createPostsResource = (search: Partial<PostSearchConfig>) => {
   })
 
   const fetchMore = async (next: boolean) => {
+    currentRequest++
+    const requestId = currentRequest
     setLoading(true)
+    setError(false)
     if (!next) setPosts([])
 
-    const configObj = { ...search }
-    if (next) configObj.before = nextPage() || undefined
+    try {
+      const configObj = { ...search }
+      if (next) configObj.before = nextPage() || undefined
 
-    const { data } = await fetchPosts(configObj)
+      const { data } = await fetchPosts(configObj)
 
-    setPosts(oldData => (configObj.before ? [...oldData, ...data] : data))
-    setLoading(false)
+      if (!data) throw new Error('No data received')
+      if (currentRequest === requestId) {
+        setPosts(oldData => (configObj.before ? [...oldData, ...data] : data))
+        setLoading(false)
+      }
+    } catch (e) {
+      console.log(e)
+      if (currentRequest === requestId) {
+        setError(true)
+        setLoading(false)
+      }
+    }
   }
 
   createEffect(() => {
@@ -116,5 +133,6 @@ export const createPostsResource = (search: Partial<PostSearchConfig>) => {
     fetch: () => fetchMore(false),
     fetchMore: () => fetchMore(true),
     isLoading,
+    hasError,
   }
 }

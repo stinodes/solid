@@ -7,10 +7,10 @@ const sizes = {
   lg: ['sm:text-md', 'text-md'],
 }
 
-type TextStyle = { size: keyof typeof sizes }
+type TextStyle = { size?: keyof typeof sizes }
 type TextProps = TextStyle & JSX.IntrinsicElements['p']
 
-export const Text = ({ size, ...props }: TextProps) => {
+export const Text = ({ size = 'md', ...props }: TextProps) => {
   return (
     <p
       {...props}
