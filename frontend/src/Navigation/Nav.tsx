@@ -35,7 +35,7 @@ export const Nav = () => {
           />
         </div>
 
-        <div class="flex-1 sm:w-1/2">
+        <div class="flex-1 sm:w-1/2 sm:flex-0">
           <Search />
         </div>
 
